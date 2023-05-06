@@ -3,8 +3,7 @@
 import Image from 'next/image'
 import { useState } from 'react';
 
-import { Button } from "@chakra-ui/react";
-import { FaJoint } from 'react-icons/fa'; 
+import { RiShoppingCartLine } from 'react-icons/ri';
 
 export default function Home() {
 
@@ -13,61 +12,131 @@ export default function Home() {
   return (
     <main>
 
-
-
-
-      <div className='mx-auto container mt-20 flex justify-center items-center'>
+      <div className='mx-auto container mt-10 flex justify-center items-center'>
         <img src="/weed.png" className='w-[64px]'></img>
         <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>HHC Dealer</p>
       </div>
 
+      <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex justify-between p-2 ' >
+        <div className="relative">
+        <input type="text" placeholder="Rechercher ..." className="w-full py-2 pr-10 pl-4 leading-tight bg-emerald border-2 border-emerald-600 rounded-md focus:outline-none focus:bg-white focus:border-emerald-500"/>
+        <div className="absolute inset-y-6 right-0 top-1 flex items-center px-2">
+          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.875-4.875"></path>
+            <circle cx="10" cy="10" r="8"></circle>
+          </svg>
+        </div>
+      </div>
+      
 
-      <div className='mt-20 p-4 md:p-3'>
+      <div className="relative">
+          <RiShoppingCartLine className="text-6xl p-2 cursor-pointer"></RiShoppingCartLine>
+          <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
+            128
+          </span>
+        </div>
+      </div>
+
+      <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex p-2'>
+        <div className='flex w-full text-4xl p-2 justify-around'>
+          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">H</span>HC</p>
+          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">C</span>BD</p>
+          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">R</span>ESINE</p>
+        </div>
+      </div>
+
+
+      <div className='p-4 md:p-3'>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
 
         <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
         <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
           <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
 
-
           <div className="flex mt-5">
-              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg">
+              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
                 Ajouter au panier
               </button>
-              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
                 <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
               </select>
-            </div>
+          </div>
 
         </div>
 
         <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
         <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
           <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/06/Fleurs-HHC-10-Super-Silver-Haze-1-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-          <div className="text-lg text-gray-600">100 points</div>
-
-          <Button>Ajouter au panier</Button>
+          
+          <div className="flex mt-5">
+              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
+                Ajouter au panier
+              </button>
+              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
+              </select>
+          </div>
 
         </div>
 
         <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
         <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">OG Kush HHC</div>
           <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-CBD-Purple-Haze-Glass-House-2.png" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-          <div className="text-lg text-gray-600">100 points</div>
 
-          <Button>Ajouter au panier</Button>
+          <div className="flex mt-5">
+              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
+                Ajouter au panier
+              </button>
+              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
+              </select>
+          </div>
 
         </div>
         
-        
-        <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
-        <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">OG Kush HHC</div>
+      
+
+
+{/* 
+        <div className="flex items-center justify-center">
+        <div className="h-24 w-24 rounded-full bg-gray-200 relative">
+          <div className="absolute inset-0 rounded-full bg-gray-200 ring-4 ring-offset-4 ring-yellow-100 animate-pulse">
+            XD
+          </div>
+        </div>
+      </div> */}
+
+
+        {/* <div className="relative bg-transparent rounded-full">
+          <div className="absolute inset-0 bg-cover bg-center filter blur-md  bg-gradient-to-b from-cyan-500 to-green-500 rounded"></div>
+          <div className="absolute inset-0 bg-gray-200 bg-opacity-25 backdrop-filter backdrop-blur-lg rounded"></div>
+          <div className="absolute inset-0 flex items-center justify-center rounded">
+            <h1 className="text-3xl font-bold text-white">Content</h1>
+          </div>
+        </div> */}
+
+
+        {/* <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg relative">
+        <div className="absolute inset-0 bg-cover bg-center filter blur-md bg-gradient-to-b from-cyan-500 to-green-500 rounded"></div>
+        <div className="absolute inset-0 bg-gray-200 bg-opacity-25 backdrop-filter backdrop-blur-lg rounded"></div>
+        <div className="w-full flex flex-col items-center justify-center rounded z-10">
+          <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">OG Kush HHC</div>
           <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-CBD-Purple-Haze-Glass-House-2.png" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-          <div className="text-lg text-gray-600">100 points</div>
-
-          <Button>Ajouter au panier</Button>
-
+          <div className="flex mt-5">
+              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
+                Ajouter au panier
+              </button>
+              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
+              </select>
+          </div>
         </div>
+        </div> */}
+
+
+
+        
         
 
 
