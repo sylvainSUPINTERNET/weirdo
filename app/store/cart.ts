@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 import { persist , createJSONStorage  } from 'zustand/middleware';
 
+
+
+// TODO : Must change this by product stripe
 export interface CartItem {
   id: number;
   name: string;
@@ -14,20 +17,6 @@ export interface Cart {
   removeFromCart: (id: number) => void;
 }
 
-
-// export const useCartStore = create<Cart>( 
-//   (set, get) => ({
-//   cart: [{id: 1, name: 'test', price: 10}],
-//   addToCart: (item: CartItem) => {
-//     set((state) => ({
-//       cart: [...state.cart, item],
-//     }));
-//   },
-//   removeFromCart: (id:number) =>
-//     set((state) => ({
-//       cart: state.cart.filter((item) => item.id !== id),
-//     })),
-// }));
 
 /**
  * Persisted cart store into local storage ( using zustand/middleware )

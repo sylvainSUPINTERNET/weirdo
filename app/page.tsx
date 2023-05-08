@@ -1,12 +1,15 @@
 'use client';
 
 import Image from 'next/image'
-import { useState } from 'react';
 import { shallow } from 'zustand/shallow'
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { Cart, CartItem, useCartStorePersist } from './store/cart';
+import { useDisclosure } from '@chakra-ui/react';
+import CartModal from './components/cartModal';
 
 export default function Home() {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const cartState:any = useCartStorePersist(
     (state) => (state),
@@ -15,9 +18,44 @@ export default function Home() {
 
 
   // TODO : Must be from Stripe products
-  const product:any  = [
+  const products:any  = [
     {
       "id": "prod_123",
+      "object": "product",
+      "active": true,
+      "description": "My Product Description",
+      "name": "My Product Name",
+      // TODO : ça n'existe pas dans Stripe response
+      "productImageUrl": "https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp",
+      "prices": {
+        "3g": {
+          "id": "price_123_3g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 1000,
+          "nickname": "3g"
+        },
+        "5g": {
+          "id": "price_123_5g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 1500,
+          "nickname": "5g"
+        },
+        "10g": {
+          "id": "price_123_10g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 2500,
+          "nickname": "10g"
+        }
+      }
+    },
+    {
+      "id": "prod_124",
       "object": "product",
       "active": true,
       "description": "My Product Description",
@@ -58,28 +96,6 @@ export default function Home() {
 
   return (
     <main>
-
-
-    {cartState && cartState.cart && cartState.cart[0] &&
-      <p>{cartState.cart[0].name}</p>
-    }      
-    <button onClick={ e =>   cartState.addToCart({
-        id: 185,
-        name: "Amnesia HHC",
-        price: 1000,
-      })}>
-        click
-      </button>
-{/*       <p>{cartState.cart[0].name}</p>
-      <p>{cartState.cart.length}</p>
-
-      <button onClick={e => { 
-        cartState.addToCart({
-        id: 185,
-        name: "Amnesia HHC",
-        price: 1000,
-      })} }>CLICK IT</button> */}
-
       <div className='mx-auto container mt-10 flex justify-center items-center'>
         <img src="/weed.png" className='w-[64px]'></img>
         <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>HHC Dealer</p>
@@ -97,11 +113,15 @@ export default function Home() {
       </div>
       
 
-      <div className="relative">
+      <div className="relative" onClick={onOpen}>
           <RiShoppingCartLine className="text-6xl p-2 cursor-pointer"></RiShoppingCartLine>
-          <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
-            128
-          </span>
+
+          {
+            cartState && cartState.cart && cartState.cart.length > 0 && <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
+              {cartState.cart.length}
+            </span>
+          }
+
         </div>
       </div>
 
@@ -118,50 +138,33 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
 
-        <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
-        <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
-          <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
 
-          <div className="flex mt-5">
-              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
-                Ajouter au panier
-              </button>
-              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
-                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
-              </select>
-          </div>
+        {
+          products && products.length > 0 && products.map(( product:any ) => {
+            return (
+            <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
+            <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
+              <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
+              <div className="flex mt-5">
+                  <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg"
+                  onClick={ e => cartState.addToCart({
+                    ...product
+                  })}>
+                    Ajouter au panier
+                  </button>
+                  <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+                    <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
+                  </select>
+              </div>
+            </div>
+            )
+          })
+        }
 
-        </div>
 
-        <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
-        <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
-          <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/06/Fleurs-HHC-10-Super-Silver-Haze-1-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-          
-          <div className="flex mt-5">
-              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
-                Ajouter au panier
-              </button>
-              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
-                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
-              </select>
-          </div>
+        <CartModal onClose={onClose} onOpen={onOpen} isOpen={isOpen}></CartModal>
 
-        </div>
 
-        <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
-        <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">OG Kush HHC</div>
-          <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-CBD-Purple-Haze-Glass-House-2.png" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-
-          <div className="flex mt-5">
-              <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg">
-                Ajouter au panier
-              </button>
-              <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
-                <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
-              </select>
-          </div>
-
-        </div>
         
       
 
