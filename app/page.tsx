@@ -2,15 +2,83 @@
 
 import Image from 'next/image'
 import { useState } from 'react';
-
+import { shallow } from 'zustand/shallow'
 import { RiShoppingCartLine } from 'react-icons/ri';
+import { Cart, CartItem, useCartStorePersist } from './store/cart';
 
 export default function Home() {
 
+  const cartState:any = useCartStorePersist(
+    (state) => (state),
+    shallow // non atomic value so no deep compare but shallow compare
+  )
+
+
+  // TODO : Must be from Stripe products
+  const product:any  = [
+    {
+      "id": "prod_123",
+      "object": "product",
+      "active": true,
+      "description": "My Product Description",
+      "name": "My Product Name",
+      // TODO : ça n'existe pas dans Stripe response
+      "productImageUrl": "https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp",
+      "prices": {
+        "3g": {
+          "id": "price_123_3g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 1000,
+          "nickname": "3g"
+        },
+        "5g": {
+          "id": "price_123_5g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 1500,
+          "nickname": "5g"
+        },
+        "10g": {
+          "id": "price_123_10g",
+          "object": "price",
+          "active": true,
+          "currency": "usd",
+          "unit_amount": 2500,
+          "nickname": "10g"
+        }
+      }
+    }
+  ];
+
+  
   const exemplePrice = 1000;
 
   return (
     <main>
+
+
+    {cartState && cartState.cart && cartState.cart[0] &&
+      <p>{cartState.cart[0].name}</p>
+    }      
+    <button onClick={ e =>   cartState.addToCart({
+        id: 185,
+        name: "Amnesia HHC",
+        price: 1000,
+      })}>
+        click
+      </button>
+{/*       <p>{cartState.cart[0].name}</p>
+      <p>{cartState.cart.length}</p>
+
+      <button onClick={e => { 
+        cartState.addToCart({
+        id: 185,
+        name: "Amnesia HHC",
+        price: 1000,
+      })} }>CLICK IT</button> */}
 
       <div className='mx-auto container mt-10 flex justify-center items-center'>
         <img src="/weed.png" className='w-[64px]'></img>
