@@ -3,7 +3,12 @@ import { persist , createJSONStorage  } from 'zustand/middleware';
 
 
 
-// TODO : Must change this by product stripe
+// TODO:  Deprecated
+
+// Can't work with nextjs due to SSR / CSR ( window.localStorage is not supported on SSR obviously ) so it's causing hydratation error 
+// since CSR and SSR not matching for the rendering of the page ( VDOM )
+
+
 export interface CartItem {
   id: number;
   name: string;

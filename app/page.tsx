@@ -1,20 +1,23 @@
 'use client';
 
-import Image from 'next/image'
-import { shallow } from 'zustand/shallow'
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { Cart, CartItem, useCartStorePersist } from './store/cart';
 import { useDisclosure } from '@chakra-ui/react';
 import CartModal from './components/cartModal';
+import { useEffect } from 'react';
+import { createRedisInstance } from './db/redisContext';
 
 export default function Home() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const cartState:any = useCartStorePersist(
-    (state) => (state),
-    shallow // non atomic value so no deep compare but shallow compare
-  )
+  const redisClient = createRedisInstance();
+
+
+  useEffect( () => {
+    console.log(redisClient);
+  })
+
 
 
   // TODO : Must be from Stripe products
@@ -115,12 +118,12 @@ export default function Home() {
 
       <div className="relative" onClick={onOpen}>
           <RiShoppingCartLine className="text-6xl p-2 cursor-pointer"></RiShoppingCartLine>
-
+{/* 
           {
             cartState && cartState.cart && cartState.cart.length > 0 && <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
               {cartState.cart.length}
             </span>
-          }
+          } */}
 
         </div>
       </div>
@@ -146,12 +149,12 @@ export default function Home() {
             <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
               <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
               <div className="flex mt-5">
-                  <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg"
+                  {/* <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg"
                   onClick={ e => cartState.addToCart({
                     ...product
                   })}>
                     Ajouter au panier
-                  </button>
+                  </button> */}
                   <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
                     <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
                   </select>
