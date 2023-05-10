@@ -1,18 +1,9 @@
 import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from "@chakra-ui/react"
 import { useEffect, useRef, useState } from "react"
 
-export default function CartModal ({isOpen, onClose}: {onOpen: any, isOpen: any, onClose: any}) {
+export default function CartModal ({isOpen, onClose, cart}: {onOpen: any, isOpen: any, onClose: any, cart:any}) {
     const btnRef = useRef()
 
-    const [cart, setCart] = useState([])
-
-    useEffect( () => {
-        const cart = window.localStorage.getItem('cart-weedy')
-        console.log(cart);
-        if (cart) {
-            setCart(JSON.parse(cart))
-        }
-    }, [])
 
     return ( 
         <div>
@@ -31,16 +22,17 @@ export default function CartModal ({isOpen, onClose}: {onOpen: any, isOpen: any,
                     </DrawerBody>
 
                     {
-                        cart && cart.length > 0 && cart.map((item: any) => <p>{item.quantity}</p>)
+                        cart && Object.keys(cart).length > 0 && Object.keys(cart).map((productKey: string) => <p>{cart[productKey].name}</p>)
                     }
 
                     {
-                        cart.length === 0 && (
+                        Object.keys(cart).length === 0 && (
                             <p className='text-center text-2xl md:text-6xl font-bold mt-10'>Votre panier est vide</p>
                         )
                     }
                     
-                    <DrawerFooter>
+                    <DrawerFooter className="">
+            
                     </DrawerFooter>
 
                 </DrawerContent>

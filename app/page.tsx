@@ -169,7 +169,7 @@ export default function Home() {
         }
 
 
-        <CartModal onClose={onClose} onOpen={onOpen} isOpen={isOpen}></CartModal>
+        <CartModal onClose={onClose} onOpen={onOpen} isOpen={isOpen} cart={cart}></CartModal>
 
 
         
