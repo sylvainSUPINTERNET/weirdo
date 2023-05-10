@@ -1,11 +1,8 @@
 import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, useDisclosure } from "@chakra-ui/react"
 import { useRef } from "react"
-import { useCartStorePersist } from "../store/cart";
 
 export default function CartModal ({isOpen, onClose}: {onOpen: any, isOpen: any, onClose: any}) {
     const btnRef = useRef()
-
-    const cartState:any = useCartStorePersist();
 
     return ( 
         <div>
@@ -24,10 +21,8 @@ export default function CartModal ({isOpen, onClose}: {onOpen: any, isOpen: any,
                     </DrawerBody>
 
                     {/* TODO */}
-                    {
-                        cartState && cartState.cart && cartState.cart.length > 0 && <div> { JSON.stringify(cartState.cart[0]) } </div>
-                    }
-
+                    <p>Exemple</p>
+                    
                     <DrawerFooter>
                     </DrawerFooter>
 

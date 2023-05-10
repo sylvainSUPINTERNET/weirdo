@@ -1,5 +1,4 @@
 import Redis, { RedisOptions }  from 'ioredis';
-import React, { createContext, useContext } from 'react';
 import { configuration } from './configuration';
 
 function getRedisConfiguration(){

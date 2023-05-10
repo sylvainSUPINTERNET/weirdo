@@ -1,21 +1,16 @@
 'use client';
 
 import { RiShoppingCartLine } from 'react-icons/ri';
-import { Cart, CartItem, useCartStorePersist } from './store/cart';
 import { useDisclosure } from '@chakra-ui/react';
 import CartModal from './components/cartModal';
 import { useEffect } from 'react';
-import { createRedisInstance } from './db/redisContext';
 
 export default function Home() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const redisClient = createRedisInstance();
-
 
   useEffect( () => {
-    console.log(redisClient);
   })
 
 

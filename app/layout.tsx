@@ -2,7 +2,6 @@
 
 import './globals.css'
 import { ChakraProvider } from "@chakra-ui/react";
-import { RedisProvider } from './db/redisContext';
 
 export default function RootLayout({children,}: {children: React.ReactNode}) {
   return (
