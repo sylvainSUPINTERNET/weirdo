@@ -1,7 +1,7 @@
 'use client';
 
 import { RiShoppingCartLine } from 'react-icons/ri';
-import { useDisclosure } from '@chakra-ui/react';
+import { Box, Skeleton, Stack, useDisclosure } from '@chakra-ui/react';
 import CartModal from './components/cartModal';
 import { useEffect, useState } from 'react';
 import {LocalStorageManager, addToCart} from './db/localStorageManager';
@@ -14,6 +14,8 @@ export default function Home() {
   const [cart, setCart] = useState({});
   
 
+  const [categories, setCategories] = useState(["HHC","CBD", "RESINE"]);
+  const [categorySelected, setCategorySelected] = useState("HHC");
 
 
   useEffect( () => {
@@ -102,12 +104,55 @@ export default function Home() {
   return (
     <main>
 
+<Stack padding={4} spacing={1}>
+      <Skeleton height='40px' isLoaded={false}>
+        <Box>Hello World!</Box>
+      </Skeleton>
+      <Skeleton
+        height='40px'
+        isLoaded={true}
+        bg='green.500'
+        color='white'
+        fadeDuration={1}
+      >
+        <Box>Hello React!</Box>
+      </Skeleton>
+      <Skeleton
+        height='40px'
+        isLoaded={true}
+        fadeDuration={4}
+        bg='blue.500'
+        color='white'
+      >
+        <Box>Hello ChakraUI!</Box>
+      </Skeleton>
+    </Stack>
+      
       <p>CURRENT CART : {JSON.stringify(cart)}</p>
       
       <div className='mx-auto container mt-10 flex justify-center items-center'>
         <img src="/weed.png" className='w-[64px]'></img>
-        <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>HHC Dealer</p>
+        <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>Weedy</p>
       </div>
+
+      <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex p-2'>
+        <div className='flex w-full text-4xl p-2 justify-around'>
+
+      {
+        categories.map( (category:string, i:number) => <div onClick={e => setCategorySelected(category)}>
+          
+          <p className={`${categorySelected === category ? 
+        'cursor-pointer border-b-4  border-emerald-500 p-2 font-bold' 
+        :'cursor-pointer  border-emerald-500 p-2 font-bold'}`}>
+
+          <span className="text-emerald-500">{category[0]}</span>
+            {category.slice(1)}
+          </p>
+          </div>)
+      }
+        </div>
+      </div>
+
 
       <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex justify-between p-2 ' >
         <div className="relative">
@@ -132,13 +177,6 @@ export default function Home() {
         </div>
       </div>
 
-      <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex p-2'>
-        <div className='flex w-full text-4xl p-2 justify-around'>
-          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">H</span>HC</p>
-          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">C</span>BD</p>
-          <p className="cursor-pointer border-b-4 border-emerald-500 p-2 font-bold"><span className="text-emerald-500">R</span>ESINE</p>
-        </div>
-      </div>
 
 
       <div className='p-4 md:p-3'>
@@ -169,7 +207,7 @@ export default function Home() {
         }
 
 
-        <CartModal onClose={onClose} onOpen={onOpen} isOpen={isOpen} cart={cart}></CartModal>
+        <CartModal onClose={onClose} onOpen={onOpen} isOpen={isOpen} cart={cart} setCart={setCart}></CartModal>
 
 
         
