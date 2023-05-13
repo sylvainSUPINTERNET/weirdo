@@ -6,7 +6,35 @@ import CartModal from './components/cartModal';
 import { useEffect, useState } from 'react';
 import {LocalStorageManager, addToCart} from './db/localStorageManager';
 
+
+
+// export async function getServerSideProps () {
+
+//   console.log("SATUUUUC");
+//   const stripe = await loadStripe(process.env.STRIPE_SECRET_KEY!);
+  
+//   console.log(stripe);
+
+//   return {
+//     props: {
+//       products: []
+//     },
+//   };
+// }
+
+
+// https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
+async function getStripeProducts () {
+  const res = await fetch(`/api/stripe`);
+  const products = await res.json();
+
+  return products;
+}
+
 export default function Home() {
+
+
+  const [stripeProductsList, setStripeProductsList] = useState([]);
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -19,7 +47,22 @@ export default function Home() {
 
 
   useEffect( () => {
+
+
     LocalStorageManager(setCart);
+
+
+    const fetchData = async () => {
+      try {
+        const productsFromStripe = await getStripeProducts();
+        setStripeProductsList(productsFromStripe);
+      } catch ( e ) {
+        alert(e);
+      }
+    }
+
+    fetchData();
+
   }, [])
 
 
@@ -104,8 +147,12 @@ export default function Home() {
   return (
     <main>
 
-<Stack padding={4} spacing={1}>
-      <Skeleton height='40px' isLoaded={false}>
+  { JSON.stringify(stripeProductsList) }
+  
+    <Stack padding={4} spacing={1}>
+      <Skeleton 
+      height='40px'
+      isLoaded={false}>
         <Box>Hello World!</Box>
       </Skeleton>
       <Skeleton
