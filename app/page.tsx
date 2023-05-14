@@ -1,7 +1,7 @@
 'use client';
 
 import { RiShoppingCartLine } from 'react-icons/ri';
-import { Box, Skeleton, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack, useDisclosure} from '@chakra-ui/react';
 import CartModal from './components/cartModal';
 import { useEffect, useState } from 'react';
 import {LocalStorageManager, addToCart} from './db/localStorageManager';
@@ -25,7 +25,7 @@ import {LocalStorageManager, addToCart} from './db/localStorageManager';
 
 // https://nextjs.org/docs/app/building-your-application/data-fetching/fetching
 async function getStripeProducts () {
-  const res = await fetch(`/api/stripe`);
+  const res = await fetch(`/api/stripe`, {cache:"no-store"}); // for dev purpose but in production use case
   const products = await res.json();
 
   return products;
@@ -39,12 +39,15 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
 
+  const [searchWord, setSearchWord] = useState("");
+
   const [cart, setCart] = useState({});
   
 
   const [categories, setCategories] = useState(["HHC","CBD", "RESINE"]);
   const [categorySelected, setCategorySelected] = useState("HHC");
 
+  const [productIsLoaded, setProductIsLoaded] = useState(false);
 
   useEffect( () => {
 
@@ -54,8 +57,9 @@ export default function Home() {
 
     const fetchData = async () => {
       try {
-        const productsFromStripe = await getStripeProducts();
-        setStripeProductsList(productsFromStripe);
+        const {data} = await getStripeProducts();
+        setStripeProductsList(data);
+        setProductIsLoaded(true);
       } catch ( e ) {
         alert(e);
       }
@@ -149,31 +153,6 @@ export default function Home() {
 
   { JSON.stringify(stripeProductsList) }
   
-    <Stack padding={4} spacing={1}>
-      <Skeleton 
-      height='40px'
-      isLoaded={false}>
-        <Box>Hello World!</Box>
-      </Skeleton>
-      <Skeleton
-        height='40px'
-        isLoaded={true}
-        bg='green.500'
-        color='white'
-        fadeDuration={1}
-      >
-        <Box>Hello React!</Box>
-      </Skeleton>
-      <Skeleton
-        height='40px'
-        isLoaded={true}
-        fadeDuration={4}
-        bg='blue.500'
-        color='white'
-      >
-        <Box>Hello ChakraUI!</Box>
-      </Skeleton>
-    </Stack>
       
       <p>CURRENT CART : {JSON.stringify(cart)}</p>
       
@@ -202,26 +181,31 @@ export default function Home() {
 
 
       <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex justify-between p-2 ' >
-        <div className="relative">
-        <input type="text" placeholder="Rechercher ..." className="w-full py-2 pr-10 pl-4 leading-tight bg-emerald border-2 border-emerald-600 rounded-md focus:outline-none focus:bg-white focus:border-emerald-500"/>
-        <div className="absolute inset-y-6 right-0 top-1 flex items-center px-2">
-          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.875-4.875"></path>
-            <circle cx="10" cy="10" r="8"></circle>
-          </svg>
-        </div>
-      </div>
-      
+        
+          <div className="relative">
+          <input type="text" placeholder={`Recherche ${categorySelected} ...`}
+          onChange={e => setSearchWord(e.target.value)}
+           className="w-full py-2 pr-10 pl-4 leading-tight bg-emerald border-2 border-emerald-600 rounded-md focus:outline-none focus:bg-white focus:border-emerald-500"/>
+          <div className="absolute inset-y-6 right-0 top-1 flex items-center px-2" onClick={e => stripeProductsList
+            .filter( (p:any) => p.metadata.category === categorySelected && p.name.toLowerCase().includes(searchWord.toLowerCase()))
+            }>
+                <svg className="w-6 h-6 text-gray-400 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.875-4.875"></path>
+                  <circle cx="10" cy="10" r="8"></circle>
+                </svg>
+              </div>
+            </div>
+        
 
-      <div className="relative" onClick={onOpen}>
-          <RiShoppingCartLine className="text-6xl p-2 cursor-pointer"></RiShoppingCartLine>
-          {
-            cart && Object.keys(cart).length !== 0 && 
-            <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
-              { Object.values(cart).reduce( (accumulator:number, currentProduct:any) => accumulator + currentProduct.quantity , 0 ) }
-            </span>
-          }
-        </div>
+        <div className="relative" onClick={onOpen}>
+            <RiShoppingCartLine className="text-6xl p-2 cursor-pointer"></RiShoppingCartLine>
+            {
+              cart && Object.keys(cart).length !== 0 && 
+              <span className="p-1 cursor-pointer absolute top-0 right-0 inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white rounded-full w-6 h-6 text-xs font-bold">
+                { Object.values(cart).reduce( (accumulator:number, currentProduct:any) => accumulator + currentProduct.quantity , 0 ) }
+              </span>
+            }
+          </div>
       </div>
 
 
@@ -230,25 +214,34 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
 
+      
+
 
         {
-          products && products.length > 0 && products.map(( product:any, i:number ) => {
+          stripeProductsList && stripeProductsList.filter( (p:any) => p.metadata.category === categorySelected).length > 0 && stripeProductsList.filter( (p:any) => p.metadata.category === categorySelected).map(( product:any, i:number ) => {
             return (
-            <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
-            <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">Amnesia HHC</div>
-              <img src="https://legrossisteducbd.fr/wp-content/uploads/2022/12/Fleurs-Amnesia-Frozen-HHC-Indoor-1024x1024.webp" alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
-              <div className="flex mt-5">
-                  <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg"
-                  onClick={ e => {
-                    addToCart({"name": `product-${i}`}, setCart);
-                  } }>
-                    Ajouter au panier
-                  </button>
-                  <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
-                    <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
-                  </select>
-              </div>
-            </div>
+              <SkeletonText mt='10' noOfLines={8} spacing='4' skeletonHeight='3' isLoaded={productIsLoaded}>
+              
+                <div className="flex flex-col items-center justify-center py-8 border-b-[0.4em] border-emerald-500 rounded shadow-lg">
+                <div className="text-3xl font-bold mb-2 text-center text-transparent bg-gradient-to-r from-cyan-500 to-emerald-500 bg-clip-text">{product.name}</div>
+                <img src={`${product.images[0]}`} alt="John Doe" className="w-40 h-40 object-cover rounded-full mb-2 hover:scale-110 transition duration-300 ease-in-out"/>
+                  <div className="p-3">
+                    <p>{product.description}</p>
+                  </div>
+                <div className="flex mt-5">
+                    <button className="bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm md:text-lg"
+                    onClick={ e => {
+                      addToCart({"name": `product-${i}`}, setCart);
+                    } }>
+                      Ajouter au panier
+                    </button>
+                    <select className="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm ml-2 shadow-lg">
+                      <option>{exemplePrice.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}</option>
+                    </select>
+                </div>
+                </div>
+
+                </SkeletonText>
             )
           })
         }
