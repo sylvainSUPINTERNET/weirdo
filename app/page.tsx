@@ -197,9 +197,16 @@ export default function Home() {
                 <span className="ml-1 text-lg">Kitchen Appliances</span>
               </div>
             </div>
-            <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-              Add to Cart
-            </button>
+
+                <div className="flex justify-center">
+                <button className="relative bg-gradient-to-r from-yellow-400 to-red-600 text-white py-4 px-8 rounded-lg text-2xl font-bold shadow-lg hover:from-red-500 hover:to-yellow-300 hover:bg-opacity-80 transition-all overflow-hidden">
+                    Acheter
+                    <span className="absolute inset-0 border-4 border-orange-500 rounded-lg animate-pulse"></span>
+                  </button>
+
+                </div>
+
+                
           </div>
         </div>
       </div>
