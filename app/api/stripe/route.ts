@@ -4,6 +4,7 @@ export async function GET(request: Request) {
     
     const res = await fetch(`https://api.stripe.com/v1/products`, {
       method: 'GET',
+      cache: 'no-cache',
       headers: {
         Authorization: `Bearer ${process.env.STRIPE_PRIVATE_KEY!}`,
       }

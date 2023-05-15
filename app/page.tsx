@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import {LocalStorageManager, addToCart} from './db/localStorageManager';
 
 
-
 // export async function getServerSideProps () {
 
 //   console.log("SATUUUUC");
@@ -161,6 +160,28 @@ export default function Home() {
         <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>Weedy</p>
       </div>
 
+
+
+      <div className="bg-white rounded-lg shadow-md overflow-hidden mx-auto container">
+      <div className={`flex items-center shadow-lg `}>
+          <div className="w-1/2">
+            {/* Product Image */}
+            <img src="https://www.expondo.fr/media/image/71/7a/a7/10010882-3_600x600.jpg"alt="Product" className="w-full h-auto" />
+          </div>
+          <div className="p-6 w-1/2">
+            {/* Product Description */}
+            <h2 className="text-2xl font-bold mb-4">Product Title</h2>
+            <p className="text-gray-600 mb-6">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium lectus vel velit tincidunt eleifend.
+            </p>
+            <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+
+
       <div className='max-w-screen-lg mx-auto mt-10 mb-5 flex p-2'>
         <div className='flex w-full text-4xl p-2 justify-around'>
 
@@ -213,9 +234,6 @@ export default function Home() {
       <div className='p-4 md:p-3'>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-screen-lg mx-auto">
-
-      
-
 
         {
           stripeProductsList && stripeProductsList.filter( (p:any) => p.metadata.category === categorySelected).length > 0 && stripeProductsList.filter( (p:any) => p.metadata.category === categorySelected).map(( product:any, i:number ) => {
