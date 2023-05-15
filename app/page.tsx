@@ -5,7 +5,8 @@ import { Box, Skeleton, SkeletonCircle, SkeletonText, Stack, useDisclosure} from
 import CartModal from './components/cartModal';
 import { useEffect, useState } from 'react';
 import {LocalStorageManager, addToCart} from './db/localStorageManager';
-
+import { FiThermometer, FiPackage, FiTag} from 'react-icons/fi';
+import { BiRuler } from 'react-icons/bi';
 
 // export async function getServerSideProps () {
 
@@ -160,20 +161,42 @@ export default function Home() {
         <p className='text-4xl md:text-6xl font-bold border-b-[0.1em] border-emerald-500 ml-4'>Weedy</p>
       </div>
 
-
-
-      <div className="bg-white rounded-lg shadow-md overflow-hidden mx-auto container">
-      <div className={`flex items-center shadow-lg `}>
-          <div className="w-1/2">
+      <div className="bg-black text-white rounded-lg md:shadow-md overflow-hidden mx-auto container mt-10 bg-[url('https://media.discordapp.net/attachments/1102026209472286781/1107783960207040622/bsqkt_une_dalle_de_lave_08eb9515-b724-4d5b-b09a-dbf1b36f4ba4.png?width=974&height=974')] bg-no-repeat bg-cover bg-center bg-fixed">
+        <div className={`flex flex-col md:flex-row items-center shadow-lg backdrop-brightness-50`} >
+          <div className="w-full md:w-1/2 mb-6 md:mb-0">
             {/* Product Image */}
-            <img src="https://www.expondo.fr/media/image/71/7a/a7/10010882-3_600x600.jpg"alt="Product" className="w-full h-auto" />
+            <img src="https://www.expondo.fr/media/image/71/7a/a7/10010882-3_600x600.jpg" alt="Product" className="w-full h-auto" />
           </div>
-          <div className="p-6 w-1/2">
+          <div className="p-6 w-full md:w-1/2 bg-black p-2 rounded h-full w-full bg-black-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50">
             {/* Product Description */}
-            <h2 className="text-2xl font-bold mb-4">Product Title</h2>
-            <p className="text-gray-600 mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pretium lectus vel velit tincidunt eleifend.
-            </p>
+            <h2 className="text-2xl md:text-6xl font-bold mb-4">Product Title</h2>
+            <div>
+              <p className="text-lg mb-6">
+                Profitez de délicieux barbecue toute l'année avec notre petit BBQ d'intérieur. Idéal pour les espaces restreints, cet appareil compact vous permet de préparer de savoureuses grillades dans le confort de votre maison.
+              </p>            
+              </div>
+            <div className="flex flex-col items-start mb-4">
+              <div className="flex items-center mb-2">
+                <BiRuler className="mr-2 text-lg" />
+                <span className="text-lg">Size: </span>
+                <span className="ml-1 text-lg">XXL</span>
+              </div>
+              <div className="flex items-center mb-2">
+                <FiThermometer className="mr-2 text-lg" />
+                <span className="text-lg">Max Temperature: </span>
+                <span className="ml-1 text-lg">200°C</span>
+              </div>
+              <div className="flex items-center mb-2">
+                <FiPackage className="mr-2 text-lg" />
+                <span className="text-lg">Material: </span>
+                <span className="ml-1 text-lg">Stainless Steel</span>
+              </div>
+              <div className="flex items-center mb-2">
+                <FiTag className="mr-2 text-lg" />
+                <span className="text-lg">Category: </span>
+                <span className="ml-1 text-lg">Kitchen Appliances</span>
+              </div>
+            </div>
             <button className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
               Add to Cart
             </button>
